@@ -2,10 +2,10 @@
 """このファイルを実行すれば、全ての処理が完結するようにプログラムする"""
 
 import cv2
-import library.importers.import_image as Importer
-import library.analyzers.preprocessing.resize_image as Resizer
-import library.analyzers.preprocessing.classify_image as Classifier
-import library.analyzers.preprocessing.crop_gears as Cropper
+from .library.importers import import_image as Importer
+from .library.analyzers.preprocessing import resize_image as Resizer
+from .library.analyzers.preprocessing import classify_image as Classifier
+from .library.analyzers.preprocessing import crop_gears as Cropper
 
 def main():
     """entry point"""
