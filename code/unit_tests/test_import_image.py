@@ -1,12 +1,12 @@
 # coding: utf-8
 """unittest of import_image.py"""
 
-import unittest
+from unittest import TestCase
 import glob
 import cv2
 from ..library.importers.import_image import ImageImporter
 
-class TestImageImporter(unittest.TestCase):
+class TestImageImporter(TestCase):
     """ImageImporterクラス"""
     def test_get_mat_list(self):
         """フォルダから全てのjpg画像ファイルをmatのリストとして取得できるか"""
