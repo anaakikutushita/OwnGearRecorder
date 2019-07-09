@@ -4,7 +4,7 @@
 import unittest
 import glob
 import cv2
-from ...library.importers.import_image import ImageImporter
+from ..library.importers.import_image import ImageImporter
 
 class TestImageImporter(unittest.TestCase):
     """ImageImporterクラス"""
