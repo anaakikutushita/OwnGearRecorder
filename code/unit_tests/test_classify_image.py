@@ -39,6 +39,15 @@ class TestMatColorDeterminer(TestCase):
         is_white = _MatColorDeterminer().is_almost_white(mat, thresh)
         self.assertTrue(is_white)
 
+    def test_gray(self):
+        """既にグレースケール化が済んでいる、白い画像を渡す"""
+        path = str(Path(ASSET_FOLDER + 'MatColorDeterminer/white.jpg'))
+        mat = cv2.imread(path)
+        mat = cv2.cvtColor(mat, cv2.COLOR_BGR2GRAY)
+        thresh = 0.01
+        is_white = _MatColorDeterminer().is_almost_white(mat, thresh)
+        self.assertTrue(is_white)
+
     def test_is_not_almost_white(self):
         """白くはない画像を渡す"""
         path = str(Path(ASSET_FOLDER + 'MatColorDeterminer/black.jpg'))

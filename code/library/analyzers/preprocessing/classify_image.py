@@ -101,7 +101,12 @@ class _MatColorDeterminer():
         width = target_mat.shape[1]
         black_pixels = []
 
-        # 値がゼロに近いほど、白っぽい色。0～255。32という数値は適当に決めた
+        # 白か黒かの判定なので、グレースケール化する。既にグレースケール化されてる場合は再度処理しない（エラーになる）
+        is_color = len(target_mat.shape) == 3
+        if is_color:
+            target_mat = cv2.cvtColor(target_mat, cv2.COLOR_BGR2GRAY)
+
+        # 値がゼロに近いほど、黒っぽい色。0～255。32という数値は適当に決めた
         barely_white_value = 32
 
         for h_pixel in range(height):
@@ -110,3 +115,10 @@ class _MatColorDeterminer():
                     black_pixels.append(target_mat[h_pixel][w_pixel])
         #画像が全て白になっている場合、その部位であると決定
         return len(black_pixels) / (height * width) < threshold
+
+def test():
+    """テストがコケたときとかにいじくりまわすスペース"""
+    pass
+
+if __name__ == '__main__':
+    test()
