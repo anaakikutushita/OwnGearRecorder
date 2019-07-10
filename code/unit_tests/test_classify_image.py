@@ -13,7 +13,8 @@ ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/
 
 class TestGearClassifier(TestCase):
     """GearClassifierクラス"""
-    def test_write_image_file_in_each_folder(self):
+    def test_write_file(self):
+        """複数のカスタマイズ画面のスクショをそれぞれの部位のフォルダに振り分けることができるか"""
         test_times_by_parts = 2
         # アタマ・フク・クツの画像を2枚ずつ取得する
         source_path = Path(ASSET_FOLDER + 'GearClassifier/')
