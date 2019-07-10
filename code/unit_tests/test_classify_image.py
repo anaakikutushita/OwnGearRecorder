@@ -4,6 +4,7 @@
 from unittest import TestCase
 from pathlib import Path
 import cv2
+from ..library.analyzers.preprocessing.classify_image import _GearPartDetecter
 from ..library.analyzers.preprocessing.classify_image import _Cv2ImageLoader
 from ..library.analyzers.preprocessing.classify_image import _MatColorDeterminer
 
