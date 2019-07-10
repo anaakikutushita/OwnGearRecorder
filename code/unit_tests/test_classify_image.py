@@ -4,6 +4,7 @@
 from unittest import TestCase
 from pathlib import Path
 import cv2
+from ..library.analyzers.preprocessing.classify_image import GearPartClassifier
 from ..library.analyzers.preprocessing.classify_image import _GearPartDetecter
 from ..library.analyzers.preprocessing.classify_image import _Cv2ImageLoader
 from ..library.analyzers.preprocessing.classify_image import _MatColorDeterminer
@@ -13,7 +14,34 @@ ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/
 class TestGearClassifier(TestCase):
     """GearClassifierクラス"""
     def test_write_image_file_in_each_folder(self):
-        pass
+        test_times_by_parts = 2
+        # アタマ・フク・クツの画像を2枚ずつ取得する
+        source_path = Path(ASSET_FOLDER + 'GearClassifier/')
+        mats = []
+        for img_file in list(source_path.glob('*.jpg')):
+            mats.append(cv2.imread(str(img_file)))
+
+        # 取得したmatを放り込む
+        classifier = GearPartClassifier(mats)
+        classifier.write_image_file_in_each_folder()
+
+        # それぞれのフォルダに2枚ずつ入っていることを確認する
+        no_bugs = True
+        result_folder = Path(classifier._output_folder)
+        for part_folder in result_folder.iterdir():
+            if not part_folder.is_dir():
+                continue
+            files = list(part_folder.glob('*.jpg'))
+            no_bugs = len(files) == test_times_by_parts
+            # 2枚入ってないフォルダが見つかった場合、その時点でテスト失敗とする。
+            if not no_bugs:
+                break
+
+        self.assertTrue(no_bugs)
+
+        # それぞれのフォルダから放り込んだ画像を削除する
+        for result_files in list(result_folder.glob('**/*.jpg')):
+            result_files.unlink()
 
 class TestGearPartDetecter(TestCase):
     """GearPartDetecterクラス"""

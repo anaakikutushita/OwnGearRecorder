@@ -9,16 +9,18 @@ class GearPartClassifier():
     """
     def __init__(self, mat_list):
         self._mat_list = mat_list
+        self._output_folder = 'images/temp/result/'
 
     def write_image_file_in_each_folder(self):
         """
         カスタマイズ画面の画像がアタマ・フク・クツのいずれかであると特定したあと、
-        対応するフォルダに画像ファイルとして書き出す
+        対応するフォルダに画像ファイルとして書き出す。ファイル名は1.jpgなど。
+        partごとに連番を振り直すわけではないので、bodyに0,1だけがあり、headには2,3だけがあり……のようなことになる。
         """
         for index, mat in enumerate(self._mat_list):
             detecter = _GearPartDetecter(mat)
             part = detecter.detect()
-            cv2.imwrite("../ResultImage/" + part + "/" + str(index) + ".jpg", mat)
+            cv2.imwrite(self._output_folder + part + '/' + str(index) + '.jpg', mat)
 
 class _GearPartDetecter():
     """
@@ -119,6 +121,7 @@ class _MatColorDeterminer():
         return len(black_pixels) / (height * width) < threshold
 
 def test():
+    """テストでコケたときにいじくりまわすスペース"""
     pass
 
 if __name__ == '__main__':
