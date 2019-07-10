@@ -16,8 +16,26 @@ class TestGearClassifier(TestCase):
 
 class TestGearPartDetecter(TestCase):
     """GearPartDetecterクラス"""
-    def test_detect(self):
-        pass
+    def test_detect_head(self):
+        """カスタマイズ画面のスクショがアタマギア一覧を表示していると特定する"""
+        source_path = str(Path(ASSET_FOLDER + 'GearPartDetecter/head.jpg'))
+        mat = cv2.imread(source_path)
+        result = _GearPartDetecter(mat).detect()
+        self.assertEqual(result, 'Head')
+
+    def test_detect_body(self):
+        """カスタマイズ画面のスクショがフクギア一覧を表示していると特定する"""
+        source_path = str(Path(ASSET_FOLDER + 'GearPartDetecter/body.jpg'))
+        mat = cv2.imread(source_path)
+        result = _GearPartDetecter(mat).detect()
+        self.assertEqual(result, 'Body')
+
+    def test_detect_foot(self):
+        """カスタマイズ画面のスクショがクツギア一覧を表示していると特定する"""
+        source_path = str(Path(ASSET_FOLDER + 'GearPartDetecter/foot.jpg'))
+        mat = cv2.imread(source_path)
+        result = _GearPartDetecter(mat).detect()
+        self.assertEqual(result, 'Foot')
 
 class TestCv2ImageLoader(TestCase):
     """Cv2ImageLoaderクラス"""

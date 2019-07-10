@@ -27,28 +27,30 @@ class _GearPartDetecter():
     """
     def __init__(self, customize_scene_mat):
         self._mat = customize_scene_mat
-        self._detect_region_left = 399
-        self._detect_region_right = 813
-        self._detect_region_top = 526
-        self._detect_region_bottom = 582
+        self._region = {
+            'top': 526,
+            'bottom': 582,
+            'left': 399,
+            'right': 813
+        }
         self._thresh_value = 240
         self._max_value = 255
 
         self._permit_black_ratio = 0.01
 
-        self._mask_image_body_path = "../../../images/mask_model/body.jpg"
-        self._mask_image_foot_path = "../../../images/mask_model/foot.jpg"
-        self._mask_image_head_path = "../../../images/mask_model/head.jpg"
+        self._mask_image_body_path = 'images/mask_model/body.jpg'
+        self._mask_image_foot_path = 'images/mask_model/foot.jpg'
+        self._mask_image_head_path = 'images/mask_model/head.jpg'
 
-        self._part_of_body = ["Body", "Foot", "Head", "Unknown"]
+        self._part_of_body = ['Body', 'Foot', 'Head', 'Unknown']
 
     def detect(self):
         """
         画像の部位を示す文字列を返す
         """
         #決定に必要な部分の画像を切り出す
-        detect_sample = self._mat[self._detect_region_top:self._detect_region_bottom,
-                                  self._detect_region_left:self._detect_region_right]
+        detect_sample = self._mat[self._region['top']:self._region['bottom'],
+                                  self._region['left']:self._region['right']]
 
         #グレースケール化→スレッショルドフィルタをかけて白黒2値の画像を取得
         gray = cv2.cvtColor(detect_sample, cv2.COLOR_BGR2GRAY)
@@ -68,7 +70,7 @@ class _GearPartDetecter():
         masked_group = [masked_body, masked_foot, masked_head]
 
         # masked_***の3つのmatのうち、どれが全て白ピクセルだったかを判定。
-        # 例えばmasked_headが全て白ピクセルだった場合は、切り出す前のカスタマイズ画面のスクショはアタマギアのものということになる。
+        # 例えばmasked_headが全て白ピクセルだった場合は、切り出す前のカスタマイズ画面のスクショはアタマギアのものということになる。'Head'が返る。
         determiner = _MatColorDeterminer()
         for index, masked_image in enumerate(masked_group):
             if determiner.is_almost_white(masked_image, self._permit_black_ratio):
@@ -117,7 +119,6 @@ class _MatColorDeterminer():
         return len(black_pixels) / (height * width) < threshold
 
 def test():
-    """テストがコケたときとかにいじくりまわすスペース"""
     pass
 
 if __name__ == '__main__':
