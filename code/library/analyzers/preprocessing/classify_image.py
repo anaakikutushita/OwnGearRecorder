@@ -69,9 +69,9 @@ class _GearPartDetecter():
 
         # masked_***の3つのmatのうち、どれが全て白ピクセルだったかを判定。
         # 例えばmasked_headが全て白ピクセルだった場合は、切り出す前のカスタマイズ画面のスクショはアタマギアのものということになる。
-        determiner = _BinaryImageBlackWhiteDeterminer()
+        determiner = _MatColorDeterminer()
         for index, masked_image in enumerate(masked_group):
-            if determiner.determine_white(masked_image, self._permit_black_ratio):
+            if determiner.is_almost_white(masked_image, self._permit_black_ratio):
                 return self._part_of_body[index]
 
         #どの部位でもなかった場合の処理を一応書いておく
@@ -87,8 +87,12 @@ class _Cv2ImageLoader():
         """
         return cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2GRAY)
 
-class _BinaryImageBlackWhiteDeterminer():
-    def determine_white(self, target_mat, threshold):
+class _MatColorDeterminer():
+    """
+    Matオブジェクトの色を判定する。
+    本システムでは現状、白色の画素だけで構成されているかどうかのチェックにのみ使用。
+    """
+    def is_almost_white(self, target_mat, threshold):
         """
         渡されたMatオブジェクトが、全て白いピクセルだけで出来ていればTrueを返す。
         ただし、thresholdの割合だけは黒いピクセルが含まれていても許容範囲とする。
