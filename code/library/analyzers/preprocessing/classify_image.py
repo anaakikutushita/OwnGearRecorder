@@ -101,9 +101,12 @@ class _MatColorDeterminer():
         width = target_mat.shape[1]
         black_pixels = []
 
-        for h_pixels in range(height):
-            for w_pixels in range(width):
-                if target_mat[h_pixels][w_pixels] < 32:
-                    black_pixels.append(target_mat[h_pixels][w_pixels])
+        # 値がゼロに近いほど、白っぽい色。0～255。32という数値は適当に決めた
+        barely_white_value = 32
+
+        for h_pixel in range(height):
+            for w_pixel in range(width):
+                if target_mat[h_pixel][w_pixel] < barely_white_value:
+                    black_pixels.append(target_mat[h_pixel][w_pixel])
         #画像が全て白になっている場合、その部位であると決定
         return len(black_pixels) / (height * width) < threshold
