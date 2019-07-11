@@ -4,24 +4,7 @@
 from enum import Enum
 import cv2
 
-class CustomizeScene(Enum):
-    """
-    カスタマイズ画面のスクショに含まれるギアの行と列を定義
-    """
-    rows = [0, 1, 2]
-    columns = [0, 1, 2, 3]
-
-class CutPositions(Enum):
-    """
-    12個のギア画像に切り分けるときの位置を定義。
-    例えば2行・3列目のギア画像を切り分けるときは、
-    tops[1], bottoms[1], lefts[2], rights[2]
-    の領域で画像を切り分ける。
-    """
-    tops = [101, 232, 364]
-    bottoms = [218, 349, 481]
-    lefts = [136, 259, 377, 491]
-    rights = [249, 372, 490, 604]
+ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/crop_gears/'
 
 class GearIconCropper():
     """
@@ -29,14 +12,23 @@ class GearIconCropper():
     """
     def __init__(self, mat):
         self._mat = mat
+        self._cut_positions = {
+            'tops': [101, 232, 364],
+            'bottoms': [218, 349, 481],
+            'lefts': [136, 259, 377, 491],
+            'rights': [249, 372, 490, 604]
+        }
 
     def crop(self, save_folder_path, orig_file_name):
         """
         一つ一つギアの画像を切り分けた後、指定したフォルダに画像ファイルとして書き出す
         """
-        detecter = ExistsDetecter()
-        for row in CustomizeScene.rows:
-            for column in CustomizeScene.columns:
+        detecter = _ExistsDetecter()
+        # カスタマイズ画面の行数と列数を定義
+        rows = 3
+        cols = 4
+        for row in range(rows):
+            for column in range(cols):
                 cutted_image = self._get_cutted_image(row, column)
                 if detecter.include_gear_image(cutted_image):
                     file_name = orig_file_name + "-cutted-" + row + column
@@ -46,15 +38,15 @@ class GearIconCropper():
         """
         カスタマイズ画面のスクショから、指定した行と列の位置にある画像を切り出して返す
         """
-        top = int(CutPositions.tops[row])
-        bottom = int(CutPositions.bottoms[row])
-        left = int(CutPositions.lefts[column])
-        right = int(CutPositions.rights[column])
+        top = int(self._cut_positions['tops'][row])
+        bottom = int(self._cut_positions['bottoms'][row])
+        left = int(self._cut_positions['lefts'][column])
+        right = int(self._cut_positions['rights'][column])
 
         gear_mat = self._mat[top:bottom, left:right]
         return gear_mat
 
-class ExistsDetecter():
+class _ExistsDetecter():
     """
     カスタマイズ画面の最後のページは、並んでいるギアが12個未満の場合がある。
     そのときに、12個に切り出した画像の中にギアが映っていないものを見分けるクラス。
@@ -80,3 +72,10 @@ class ExistsDetecter():
 
         ratio = len(white_pixels) / (height * width)
         return ratio > self._white_pixel_must_included_ratio
+
+def test():
+    """テストでコケたときにいじくりまわすスペース"""
+    pass
+
+if __name__ == '__main__':
+    test()
