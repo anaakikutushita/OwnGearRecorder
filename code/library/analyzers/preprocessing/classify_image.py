@@ -56,8 +56,7 @@ class _GearPartDetecter():
 
         #グレースケール化→スレッショルドフィルタをかけて白黒2値の画像を取得
         gray = cv2.cvtColor(detect_sample, cv2.COLOR_BGR2GRAY)
-        #thresholdだけが欲しいんだけど、それだけを取得する方法を知らないので、使わないretも取得してしまっている
-        ret, threshold = cv2.threshold(gray, self._thresh_value, self._max_value, cv2.THRESH_BINARY)
+        threshold = cv2.threshold(gray, self._thresh_value, self._max_value, cv2.THRESH_BINARY)[1]
 
         #マスク画像を加算する
         loader = _Cv2ImageLoader()
