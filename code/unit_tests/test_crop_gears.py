@@ -5,6 +5,7 @@ from unittest import TestCase
 from pathlib import Path
 import cv2
 from ..library.analyzers.preprocessing.crop_gears import GearIconCropper
+from ..library.analyzers.preprocessing.crop_gears import _ExistsDetecter
 
 ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/crop_gears/'
 
@@ -33,3 +34,21 @@ class TestGearIconCropper(TestCase):
         results.append(len(results) == len(tops) * len(lefts))
 
         self.assertTrue(all(results))
+
+class TestExistsDetecter(TestCase):
+    """_ExistsDetecterクラス"""
+    def test_find_gear(self):
+        """切り出した画像にギアが含まれる場合にTrue"""
+        source_path = Path(ASSET_FOLDER + 'ExistsDetecter/a.jpg')
+        cropper = GearIconCropper(cv2.imread(str(source_path)))
+        cutted = cropper._get_cutted_image(0, 0)
+
+        self.assertTrue(_ExistsDetecter().include_gear_image(cutted))
+
+    def test_miss_gear(self):
+        """切り出した画像にギアが存在しない場合にFalse"""
+        source_path = Path(ASSET_FOLDER + 'ExistsDetecter/a.jpg')
+        cropper = GearIconCropper(cv2.imread(str(source_path)))
+        cutted = cropper._get_cutted_image(0, 1)
+
+        self.assertFalse(_ExistsDetecter().include_gear_image(cutted))
