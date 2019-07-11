@@ -34,10 +34,10 @@ class _MatResizer():
         """
         return cv2.resize(target_mat, (after_resized_x, after_resized_y))
 
-def test():
-    """テストでコケたときにいじくりまわすスペース"""
+# def test():
+#     """テストでコケたときにいじくりまわすスペース"""
     
-    pass
+#     pass
 
-if __name__ == '__main__':
-    test()
+# if __name__ == '__main__':
+#     test()
