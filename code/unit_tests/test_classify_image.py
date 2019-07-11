@@ -28,7 +28,7 @@ class TestGearClassifier(TestCase):
 
         # それぞれのフォルダに2枚ずつ入っていることを確認する
         no_bugs = True
-        result_folder = Path(classifier._output_folder)
+        result_folder = Path('images/temp/result')
         for part_folder in result_folder.iterdir():
             if not part_folder.is_dir():
                 continue
