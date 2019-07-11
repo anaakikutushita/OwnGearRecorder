@@ -67,6 +67,13 @@ class TestGearPartDetecter(TestCase):
         result = _GearPartDetecter(mat).detect()
         self.assertEqual(result, 'Foot')
 
+    def test_detect_unknown(self):
+        """解像度だけ一致している黒色画像を入力する"""
+        source_path = str(Path(ASSET_FOLDER + 'GearPartDetecter/Unknown.jpg'))
+        mat = cv2.imread(source_path)
+        result = _GearPartDetecter(mat).detect()
+        self.assertEqual(result, 'Unknown')
+
 class TestCv2ImageLoader(TestCase):
     """Cv2ImageLoaderクラス"""
     def test_load_gray(self):

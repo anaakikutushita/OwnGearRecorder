@@ -120,9 +120,9 @@ class _MatColorDeterminer():
         #画像が全て白になっている場合、その部位であると決定
         return len(black_pixels) / (height * width) < threshold
 
-def test():
-    """テストでコケたときにいじくりまわすスペース"""
-    pass
+# def test():
+#     """テストでコケたときにいじくりまわすスペース"""
+#     pass
 
-if __name__ == '__main__':
-    test()
+# if __name__ == '__main__':
+#     test()
