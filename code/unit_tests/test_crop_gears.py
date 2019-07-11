@@ -11,13 +11,49 @@ ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/
 
 class TestGearIconCropper(TestCase):
     """GearIconCropperクラス"""
+    def test_full_crop(self):
+        """ギアが12個あるカスタマイズ画面のスクショから切り分けてそれぞれ保存できるか"""
+        source_path = Path(ASSET_FOLDER + 'GearIconCropper/crop/full.jpg')
+        mat = cv2.imread(str(source_path))
+        cropper = GearIconCropper(mat)
+
+        dest_path = Path(ASSET_FOLDER + 'GearIconCropper/crop/result/')
+        cropper.crop(str(dest_path), source_path.stem)
+
+        # cropの後に12枚の画像が保存されていれば成功
+        files = list(dest_path.glob('*.jpg'))
+        expected_num = 12
+        self.assertEqual(len(files), expected_num)
+
+        # 終わったら、生成した画像を削除する
+        for del_file in files:
+            del_file.unlink()
+
+    def test_few_crop(self):
+        """ギアが12個未満のカスタマイズ画面のスクショから切り分けて保存できるか"""
+        source_path = Path(ASSET_FOLDER + 'GearIconCropper/crop/few_7.jpg')
+        mat = cv2.imread(str(source_path))
+        cropper = GearIconCropper(mat)
+
+        dest_path = Path(ASSET_FOLDER + 'GearIconCropper/crop/result/')
+        cropper.crop(str(dest_path), source_path.stem)
+
+        # cropの後に7枚の画像が保存されていれば成功
+        files = list(dest_path.glob('*.jpg'))
+        expected_num = 7
+        self.assertEqual(len(files), expected_num)
+
+        # 終わったら、生成した画像を削除する
+        for del_file in files:
+            del_file.unlink()
+
     def test_cut(self):
         """カスタマイズ画面のスクショからギアを1着ずつ切り出せるか"""
         tops = [101, 232, 364]
         bottoms = [218, 349, 481]
         lefts = [136, 259, 377, 491]
         rights = [249, 372, 490, 604]
-        source_path = Path(ASSET_FOLDER + 'GearIconCropper/a.jpg')
+        source_path = Path(ASSET_FOLDER + 'GearIconCropper/cut/a.jpg')
         target_mat = cv2.imread(str(source_path))
 
         results = []

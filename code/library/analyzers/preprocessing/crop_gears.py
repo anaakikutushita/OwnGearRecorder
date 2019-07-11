@@ -1,7 +1,7 @@
 # coding: utf-8
 """load image and split by gear icons."""
 
-from enum import Enum
+from pathlib import Path
 import cv2
 
 ASSET_FOLDER = 'code/unit_tests/assets_for_test/library/analyzers/preprocessing/crop_gears/'
@@ -31,8 +31,9 @@ class GearIconCropper():
             for column in range(cols):
                 cutted_image = self._get_cutted_image(row, column)
                 if detecter.include_gear_image(cutted_image):
-                    file_name = orig_file_name + "-cutted-" + row + column
-                    cv2.imwrite(save_folder_path + file_name + ".jpg", cutted_image)
+                    file_name = orig_file_name + '-row' + str(row) + '-col' + str(column) + '.jpg'
+                    # テストが通らずにハマったことがあるので、Pathオブジェクトを使って安全に処理する
+                    cv2.imwrite(str(Path(save_folder_path, file_name)), cutted_image)
 
     def _get_cutted_image(self, row, column):
         """
@@ -75,6 +76,7 @@ class _ExistsDetecter():
 
 def test():
     """テストでコケたときにいじくりまわすスペース"""
+
     pass
 
 if __name__ == '__main__':
