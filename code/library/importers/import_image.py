@@ -26,3 +26,11 @@ class ImageImporter():
             img_list.append(orig_img)
 
         return img_list
+
+# def test():
+#     """テストでコケたときにいじくりまわすスペース"""
+
+#     pass
+
+# if __name__ == '__main__':
+#     test()
