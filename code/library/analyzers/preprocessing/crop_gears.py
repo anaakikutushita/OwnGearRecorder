@@ -74,10 +74,10 @@ class _ExistsDetecter():
         ratio = len(white_pixels) / (height * width)
         return ratio > self._white_pixel_must_included_ratio
 
-def test():
-    """テストでコケたときにいじくりまわすスペース"""
+# def test():
+#     """テストでコケたときにいじくりまわすスペース"""
 
-    pass
+#     pass
 
-if __name__ == '__main__':
-    test()
+# if __name__ == '__main__':
+#     test()
