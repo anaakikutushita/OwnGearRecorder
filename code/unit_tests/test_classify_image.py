@@ -27,18 +27,16 @@ class TestGearClassifier(TestCase):
         classifier.write_image_file_in_each_folder()
 
         # それぞれのフォルダに2枚ずつ入っていることを確認する
-        no_bugs = True
+        results = []
         result_folder = Path('images/temp/result')
         for part_folder in result_folder.iterdir():
-            if not part_folder.is_dir():
-                continue
+            # if not part_folder.is_dir():
+            #     continue # デフォルトのフォルダ構成のままであれば、part_folderが存在しないということはあり得ない
             files = list(part_folder.glob('*.jpg'))
-            no_bugs = len(files) == test_times_by_parts
-            # 2枚入ってないフォルダが見つかった場合、その時点でテスト失敗とする。
-            if not no_bugs:
-                break
+            results.append(len(files) == test_times_by_parts)
 
-        self.assertTrue(no_bugs)
+        # 2枚入ってないフォルダがある場合、リストの要素がFalseになる
+        self.assertTrue(all(results))
 
         # それぞれのフォルダから放り込んだ画像を削除する
         for result_files in list(result_folder.glob('**/*.jpg')):
