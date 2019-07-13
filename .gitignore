@@ -2,3 +2,4 @@
 *.csv
 *.pyc
 /code/unit_tests/assets_for_test/SourceImage/
+/images/original_model/
