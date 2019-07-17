@@ -13,5 +13,5 @@ class TestGearHist(TestCase):
         models_path = Path('images/original_model')
         models_num = len(list(models_path.glob('*.png')))
 
-        num = len(GearHist().get())
+        num = len(GearHist().get_all_dict())
         self.assertEqual(num, models_num)

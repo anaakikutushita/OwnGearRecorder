@@ -10,7 +10,7 @@ import numpy as np
 
 class GearHist():
     """見本となるギア画像のヒストグラムを取得する"""
-    def get(self):
+    def get_all_dict(self):
         """ギアIDとndarrayの辞書形式で各ギア画像のヒストグラムを取得する"""
         # この辺はヒストグラム計算のために必要だから仕方なく書いてるやつ
         all_bins = [256]
