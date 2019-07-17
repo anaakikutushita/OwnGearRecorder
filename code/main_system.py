@@ -7,12 +7,13 @@ from .library.importers import import_image as Importer
 from .library.analyzers.preprocessing import resize_image as Resizer
 from .library.analyzers.preprocessing import classify_image as Classifier
 from .library.analyzers.preprocessing import crop_gears as Cropper
+from .library.analyzers.main_process import identify_gears_name as Identifier
 
 def main():
     """entry point"""
 
     #ゲーム画面のスクショが溜まっているフォルダから、全ての画像を取り込む
-    _input_folder = 'images/temp/source/'
+    _input_folder = 'images/temp/input/'
     orig_mat_list = Importer.ImageImporter(_input_folder).get_mat_list()
 
     #スクショのキャンバスサイズが揃っていないと処理できないので、統一する
@@ -24,27 +25,30 @@ def main():
     classifier.write_image_file_in_each_folder()
 
     #分類した画像をそれぞれ1個ずつのギアの画像に切り分けて一時保存
-    _result_folder = 'images/temp/result/'
+    _output_folder = 'images/temp/output/'
     _parts = ['Body', 'Foot', 'Head']
     for part in _parts:
-        customize_mats = Importer.ImageImporter(_result_folder + part + '/').get_mat_list()
+        customize_mats = Importer.ImageImporter(_output_folder + part + '/').get_mat_list()
         for index, img in enumerate(customize_mats):
             cropper = Cropper.GearIconCropper(img)
-            cropper.crop(_result_folder + part + '/cutted/', str(index))
+            cropper.crop(_output_folder + part + '/cutted/', str(index))
 
     #切り分けた画像から、ギアそのものだけが映っている上半分の画像を抽出する
     for part in _parts:
-        only_gear_mats = Importer.ImageImporter(_result_folder + part + '/cutted/').get_mat_list()
+        only_gear_mats = Importer.ImageImporter(_output_folder + part + '/cutted/').get_mat_list()
         top = 0
         gear_image_bottom = 79
         left = 0
         for index, img in enumerate(only_gear_mats):
             upper_half = img[top:gear_image_bottom, left:img.shape[1]]
-            cv2.imwrite(_result_folder + part + '/OnlyGear/' + str(index) + '.jpg', upper_half)
+            cv2.imwrite(_output_folder + part + '/OnlyGear/' + str(index) + '.jpg', upper_half)
 
-    #標本画像を用意する
+    #標本のヒストグラムを取得
+    gear_hist = Identifier.GearHist()
+    hists_dic = gear_hist.get_all_dict()
 
-    #抽出した画像と標本画像を比較して、ギアの名前を特定する
+    #抽出した画像と標本を比較して、ギアの名前を特定する
+
 
     #切り分けた画像から、ギアパワーの部分の画像を抽出する
 

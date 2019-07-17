@@ -17,9 +17,9 @@ class TestGearClassifier(TestCase):
         """複数のカスタマイズ画面のスクショをそれぞれの部位のフォルダに振り分けることができるか"""
         test_times_by_parts = 2
         # アタマ・フク・クツの画像を2枚ずつ取得する
-        source_path = Path(ASSET_FOLDER + 'GearClassifier/')
+        input_path = Path(ASSET_FOLDER + 'GearClassifier/')
         mats = []
-        for img_file in list(source_path.glob('*.jpg')):
+        for img_file in list(input_path.glob('*.jpg')):
             mats.append(cv2.imread(str(img_file)))
 
         # 取得したmatを放り込む
@@ -28,8 +28,8 @@ class TestGearClassifier(TestCase):
 
         # それぞれのフォルダに2枚ずつ入っていることを確認する
         results = []
-        result_folder = Path('images/temp/result')
-        for part_folder in result_folder.iterdir():
+        output_folder = Path('images/temp/output')
+        for part_folder in output_folder.iterdir():
             # if not part_folder.is_dir():
             #     continue # デフォルトのフォルダ構成のままであれば、part_folderが存在しないということはあり得ない
             files = list(part_folder.glob('*.jpg'))
@@ -39,7 +39,7 @@ class TestGearClassifier(TestCase):
         self.assertTrue(all(results))
 
         # それぞれのフォルダから放り込んだ画像を削除する
-        for result_files in list(result_folder.glob('**/*.jpg')):
+        for result_files in list(output_folder.glob('**/*.jpg')):
             result_files.unlink()
 
 class TestGearPartDetecter(TestCase):

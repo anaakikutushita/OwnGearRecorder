@@ -9,7 +9,7 @@ class GearPartClassifier():
     """
     def __init__(self, mat_list):
         self._mat_list = mat_list
-        self._output_folder = 'images/temp/result/'
+        self._output_folder = 'images/temp/output/'
 
     def write_image_file_in_each_folder(self):
         """
