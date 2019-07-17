@@ -1,13 +1,17 @@
 # coding: utf-8
 """このファイルを実行すれば、全ての処理が完結するようにプログラムする"""
+import sys
+sys.path.append('code/library/importers')
+sys.path.append('code/library/analyzers/preprocessing')
+sys.path.append('code/library/analyzers/main_process')
 
 from pathlib import Path
 import cv2
-from .library.importers import import_image as Importer
-from .library.analyzers.preprocessing import resize_image as Resizer
-from .library.analyzers.preprocessing import classify_image as Classifier
-from .library.analyzers.preprocessing import crop_gears as Cropper
-from .library.analyzers.main_process import identify_gears_name as Identifier
+import import_image as Importer
+import resize_image as Resizer
+import classify_image as Classifier
+import crop_gears as Cropper
+import identify_gears_name as Identifier
 
 def main():
     """entry point"""
