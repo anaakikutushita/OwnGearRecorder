@@ -1,6 +1,7 @@
 # coding: utf-8
 """このファイルを実行すれば、全ての処理が完結するようにプログラムする"""
 
+from pathlib import Path
 import cv2
 from .library.importers import import_image as Importer
 from .library.analyzers.preprocessing import resize_image as Resizer
@@ -11,19 +12,20 @@ def main():
     """entry point"""
 
     #ゲーム画面のスクショが溜まっているフォルダから、全ての画像を取り込む
-    _source_folder = '../temp_images/source/'
-    orig_mat_list = Importer.ImageImporter(_source_folder).get_mat_list()
+    _input_folder = 'images/temp/source/'
+    orig_mat_list = Importer.ImageImporter(_input_folder).get_mat_list()
 
     #スクショのキャンバスサイズが揃っていないと処理できないので、統一する
     resized_mat_list = Resizer.ImageResizer().get(orig_mat_list)
 
     #スクショをアタマ/フク/クツに分類し、対応する部位のフォルダ内に画像ファイルを書き出す
     classifier = Classifier.GearPartClassifier(resized_mat_list)
+    # 保存先のフォルダもmain_systemから指定できるようにした方がいいと思う
     classifier.write_image_file_in_each_folder()
 
     #分類した画像をそれぞれ1個ずつのギアの画像に切り分けて一時保存
-    _result_folder = '../images/temp/result/'
-    _parts = ['body', 'foot', 'head']
+    _result_folder = 'images/temp/result/'
+    _parts = ['Body', 'Foot', 'Head']
     for part in _parts:
         customize_mats = Importer.ImageImporter(_result_folder + part + '/').get_mat_list()
         for index, img in enumerate(customize_mats):
