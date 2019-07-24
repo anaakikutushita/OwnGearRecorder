@@ -33,7 +33,8 @@ class GearIconCropper():
                 if detecter.include_gear_image(cutted_image):
                     file_name = orig_file_name + '-row' + str(row) + '-col' + str(column) + '.jpg'
                     # テストが通らずにハマったことがあるので、Pathオブジェクトを使って安全に処理する
-                    cv2.imwrite(str(Path(save_folder_path, file_name)), cutted_image)
+                    save_path = str(Path(save_folder_path, file_name))
+                    cv2.imwrite(save_path, cutted_image)
 
     def _get_cutted_image(self, row, column):
         """
